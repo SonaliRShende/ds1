@@ -1,0 +1,14 @@
+as1Client
+as1Server
+as2Client
+as2Server
+Berkeley
+Calculator
+CalculatorClient
+CalculatorImpl
+CalculatorServer
+Bully
+Ring
+MPISum
+TokenRing
+Web
