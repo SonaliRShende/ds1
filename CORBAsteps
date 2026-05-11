@@ -1,0 +1,42 @@
+1 .  In Eclipse:
+Go to Window → Preferences → Java → Installed JREs
+Add JDK 1.8
+Set it as default
+2. Set JDK 8 For Current Project
+Right Click Project:
+Properties → Java Build Path → Libraries
+Remove current JRE if it is Java 17/21.
+Click:
+Add Library → JRE System Library → Alternate JR
+3. Set Compiler Level
+Go to:
+Project → Properties → Java Compiler
+Enable:
+Enable project specific settings
+Set:
+Compiler compliance level = 1.8
+Apply
+
+2. in CMD 
+	idlj -fall Calculator.idl
+	refresh 
+	
+3.
+
+Go to CMD:
+Go to project folder:
+cd D:\sonali\DS\Corbatest
+Run:
+orbd-ORBInitialPort 1050-ORBInitialHost localhost
+Keep this terminal OPEN
+
+In Eclipse:
+Right Click:
+Server.java
+Select:
+Run As → Run Configurations
+In Program Arguments add:
+-ORBInitialPort 1050 -ORBInitialHost localhost
+Click Run
+
+

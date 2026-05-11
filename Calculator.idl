@@ -1,0 +1,8 @@
+module CalcModule {
+    interface Calculator {
+        double add(in double a, in double b);
+        double sub(in double a, in double b);
+        double mul(in double a, in double b);
+        double div(in double a, in double b);
+    };
+};

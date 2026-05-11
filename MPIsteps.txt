@@ -1,0 +1,28 @@
+1.  Download MPJ Express
+
+👉 Download from:
+https://mpj-express.org/
+
+2. Open Eclipse
+Create Java Project → MPIProject
+Right click → Build Path → Configure Build Path
+Add External JAR:
+C:\mpj\lib\mpj.jar
+
+3. Compile with classpath
+
+👉 Use this command (IMPORTANT):
+
+javac -cp "C:\mpj\lib\mpj.jar" MPISum.java
+
+4.: Set MPJ_HOME
+
+In CMD, run:
+
+set MPJ_HOME=D:\sonali\DS\mpj-v0_44\mpj-v0_44
+
+5. Add to PATH
+set PATH=%MPJ_HOME%\bin;%PATH%
+
+6.Run again
+mpjrun.bat -np 4 MPISum
