@@ -1,0 +1,194 @@
+<html>
+<body>
+
+<h2>Student Record Web Service</h2>
+
+<!-- CREATE -->
+
+<h3>Create Student</h3>
+
+<form action="http://localhost:8000/create" method="get">
+
+ID:
+<input type="text" name="id">
+
+<br><br>
+
+Name:
+<input type="text" name="name">
+
+<br><br>
+
+<input type="submit" value="Create">
+
+</form>
+
+<hr>
+
+<!-- RETRIEVE -->
+
+<h3>Retrieve Student</h3>
+
+<form action="http://localhost:8000/retrieve" method="get">
+
+ID:
+<input type="text" name="id">
+
+<br><br>
+
+<input type="submit" value="Retrieve">
+
+</form>
+
+<hr>
+
+<!-- UPDATE -->
+
+<h3>Update Student</h3>
+
+<form action="http://localhost:8000/update" method="get">
+
+ID:
+<input type="text" name="id">
+
+<br><br>
+
+New Name:
+<input type="text" name="name">
+
+<br><br>
+
+<input type="submit" value="Update">
+
+</form>
+
+</body>
+</html>
+
+import com.sun.net.httpserver.*;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class StudentWebService {
+
+    // Student Database
+    static HashMap<Integer, String> students = new HashMap<>();
+
+    public static void main(String[] args) throws Exception {
+
+        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+
+        // CREATE
+        server.createContext("/create", (exchange) -> {
+
+            String query = exchange.getRequestURI().getQuery();
+
+            String[] params = query.split("&");
+
+            int id = Integer.parseInt(params[0].split("=")[1]);
+
+            String name = params[1].split("=")[1];
+
+            students.put(id, name);
+
+            String response =
+                    "<html><body>"
+                    + "<h2>Student Added Successfully</h2>"
+                    + "ID = " + id + "<br>"
+                    + "Name = " + name + "<br><br>"
+                    + "<a href='file:///D:/index.html'>Go Back</a>"
+                    + "</body></html>";
+
+            exchange.sendResponseHeaders(200, response.length());
+
+            OutputStream os = exchange.getResponseBody();
+
+            os.write(response.getBytes());
+
+            os.close();
+        });
+
+        // RETRIEVE
+        server.createContext("/retrieve", (exchange) -> {
+
+            String query = exchange.getRequestURI().getQuery();
+
+            int id = Integer.parseInt(query.split("=")[1]);
+
+            String name = students.get(id);
+
+            String response = "<html><body>";
+
+            if (name != null) {
+
+                response +=
+                        "<h2>Student Found</h2>"
+                        + "ID = " + id + "<br>"
+                        + "Name = " + name;
+
+            } else {
+
+                response += "<h2>Student Not Found</h2>";
+            }
+
+            response +=
+                    "<br><br>"
+                    + "<a href='file:///D:/index.html'>Go Back</a>"
+                    + "</body></html>";
+
+            exchange.sendResponseHeaders(200, response.length());
+
+            OutputStream os = exchange.getResponseBody();
+
+            os.write(response.getBytes());
+
+            os.close();
+        });
+
+        // UPDATE
+        server.createContext("/update", (exchange) -> {
+
+            String query = exchange.getRequestURI().getQuery();
+
+            String[] params = query.split("&");
+
+            int id = Integer.parseInt(params[0].split("=")[1]);
+
+            String newName = params[1].split("=")[1];
+
+            String response = "<html><body>";
+
+            if (students.containsKey(id)) {
+
+                students.put(id, newName);
+
+                response +=
+                        "<h2>Student Updated Successfully</h2>"
+                        + "ID = " + id + "<br>"
+                        + "New Name = " + newName;
+
+            } else {
+
+                response += "<h2>Student Not Found</h2>";
+            }
+
+            response +=
+                    "<br><br>"
+                    + "<a href='file:///D:/index.html'>Go Back</a>"
+                    + "</body></html>";
+
+            exchange.sendResponseHeaders(200, response.length());
+
+            OutputStream os = exchange.getResponseBody();
+
+            os.write(response.getBytes());
+
+            os.close();
+        });
+
+        server.start();
+
+        System.out.println("Server running at http://localhost:8000");
+    }
+}

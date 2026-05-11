@@ -1,0 +1,205 @@
+<html>
+<body>
+
+<h2>Calculator Web Service</h2>
+
+<form action="http://localhost:8000/add" method="get">
+
+Enter A:
+<input type="text" name="a">
+
+<br><br>
+
+Enter B:
+<input type="text" name="b">
+
+<br><br>
+
+<input type="submit" value="Add">
+
+</form>
+
+<hr>
+
+<form action="http://localhost:8000/sub" method="get">
+
+Enter A:
+<input type="text" name="a">
+
+<br><br>
+
+Enter B:
+<input type="text" name="b">
+
+<br><br>
+
+<input type="submit" value="Subtract">
+
+</form>
+
+<hr>
+
+<form action="http://localhost:8000/mul" method="get">
+
+Enter A:
+<input type="text" name="a">
+
+<br><br>
+
+Enter B:
+<input type="text" name="b">
+
+<br><br>
+
+<input type="submit" value="Multiply">
+
+</form>
+
+<hr>
+
+<form action="http://localhost:8000/div" method="get">
+
+Enter A:
+<input type="text" name="a">
+
+<br><br>
+
+Enter B:
+<input type="text" name="b">
+
+<br><br>
+
+<input type="submit" value="Divide">
+
+</form>
+
+</body>
+</html>
+
+import com.sun.net.httpserver.*;
+import java.io.*;
+import java.net.*;
+
+public class CalculatorWebService {
+
+    public static void main(String[] args) throws Exception {
+
+        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+
+        // ADD
+        server.createContext("/add", (exchange) -> {
+
+            String query = exchange.getRequestURI().getQuery();
+
+            String[] params = query.split("&");
+
+            int a = Integer.parseInt(params[0].split("=")[1]);
+
+            int b = Integer.parseInt(params[1].split("=")[1]);
+
+            int result = a + b;
+
+            String response =
+                    "<html><body>"
+                    + "<h2>Addition Result = " + result + "</h2>"
+                    + "<a href='file:///D:/index.html'>Go Back</a>"
+                    + "</body></html>";
+
+            exchange.sendResponseHeaders(200, response.length());
+
+            OutputStream os = exchange.getResponseBody();
+
+            os.write(response.getBytes());
+
+            os.close();
+        });
+
+        // SUBTRACT
+        server.createContext("/sub", (exchange) -> {
+
+            String query = exchange.getRequestURI().getQuery();
+
+            String[] params = query.split("&");
+
+            int a = Integer.parseInt(params[0].split("=")[1]);
+
+            int b = Integer.parseInt(params[1].split("=")[1]);
+
+            int result = a - b;
+
+            String response =
+                    "<html><body>"
+                    + "<h2>Subtraction Result = " + result + "</h2>"
+                    + "<a href='file:///D:/index.html'>Go Back</a>"
+                    + "</body></html>";
+
+            exchange.sendResponseHeaders(200, response.length());
+
+            OutputStream os = exchange.getResponseBody();
+
+            os.write(response.getBytes());
+
+            os.close();
+        });
+
+        // MULTIPLY
+        server.createContext("/mul", (exchange) -> {
+
+            String query = exchange.getRequestURI().getQuery();
+
+            String[] params = query.split("&");
+
+            int a = Integer.parseInt(params[0].split("=")[1]);
+
+            int b = Integer.parseInt(params[1].split("=")[1]);
+
+            int result = a * b;
+
+            String response =
+                    "<html><body>"
+                    + "<h2>Multiplication Result = " + result + "</h2>"
+                    + "<a href='file:///D:/index.html'>Go Back</a>"
+                    + "</body></html>";
+
+            exchange.sendResponseHeaders(200, response.length());
+
+            OutputStream os = exchange.getResponseBody();
+
+            os.write(response.getBytes());
+
+            os.close();
+        });
+
+        // DIVIDE
+        server.createContext("/div", (exchange) -> {
+
+            String query = exchange.getRequestURI().getQuery();
+
+            String[] params = query.split("&");
+
+            int a = Integer.parseInt(params[0].split("=")[1]);
+
+            int b = Integer.parseInt(params[1].split("=")[1]);
+
+            int result = a / b;
+
+            String response =
+                    "<html><body>"
+                    + "<h2>Division Result = " + result + "</h2>"
+                    + "<a href='file:///D:/index.html'>Go Back</a>"
+                    + "</body></html>";
+
+            exchange.sendResponseHeaders(200, response.length());
+
+            OutputStream os = exchange.getResponseBody();
+
+            os.write(response.getBytes());
+
+            os.close();
+        });
+
+        server.start();
+
+        System.out.println("Server running at http://localhost:8000");
+    }
+}

@@ -1,0 +1,83 @@
+<html>
+<body>
+
+<h2>Weather Web Service</h2>
+
+<form action="http://localhost:8000/weather" method="get">
+
+Enter City Name:
+
+<input type="text" name="city">
+
+<br><br>
+
+<input type="submit" value="Get Weather">
+
+</form>
+
+</body>
+</html>
+import com.sun.net.httpserver.*;
+import java.io.*;
+import java.net.*;
+
+public class WeatherWebService {
+
+    public static void main(String[] args) throws Exception {
+
+        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+
+        // WEATHER SERVICE
+        server.createContext("/weather", (exchange) -> {
+
+            String query = exchange.getRequestURI().getQuery();
+
+            String city = query.split("=")[1];
+
+            String weather = "";
+
+            // Simple Weather Database
+
+            if (city.equalsIgnoreCase("Pune")) {
+
+                weather = "25 Degree Celsius";
+
+            } else if (city.equalsIgnoreCase("Mumbai")) {
+
+                weather = "30 Degree Celsius";
+
+            } else if (city.equalsIgnoreCase("Delhi")) {
+
+                weather = "35 Degree Celsius";
+
+            } else if (city.equalsIgnoreCase("Nashik")) {
+
+                weather = "24 Degree Celsius";
+
+            } else {
+
+                weather = "Weather Data Not Available";
+            }
+
+            String response =
+                    "<html><body>"
+                    + "<h2>Weather Report</h2>"
+                    + "City = " + city + "<br><br>"
+                    + "Temperature = " + weather + "<br><br>"
+                    + "<a href='file:///D:/index.html'>Go Back</a>"
+                    + "</body></html>";
+
+            exchange.sendResponseHeaders(200, response.length());
+
+            OutputStream os = exchange.getResponseBody();
+
+            os.write(response.getBytes());
+
+            os.close();
+        });
+
+        server.start();
+
+        System.out.println("Server running at http://localhost:8000");
+    }
+}
